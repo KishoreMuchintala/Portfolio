@@ -1,4 +1,4 @@
-export const resumeUrl = "%PUBLIC_URL%/resume.pdf";
+export const resumeUrl = "%PUBLIC_URL%/Kishore_RM_Resume.pdf";
 export const profilePicture = "%PUBLIC_URL%/Profile_picture.jpeg"; // Place your profile image in public/profile.jpg
 export function ProfilePicture({ size = 80 }) {
   return (

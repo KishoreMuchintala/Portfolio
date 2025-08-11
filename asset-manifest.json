@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/KishoreMuchintala/Portfolio/tree/gh-pages/static/css/main.b0451ef3.css",
+    "main.js": "/KishoreMuchintala/Portfolio/tree/gh-pages/static/js/main.32ae9e32.js",
+    "index.html": "/KishoreMuchintala/Portfolio/tree/gh-pages/index.html",
+    "main.b0451ef3.css.map": "/KishoreMuchintala/Portfolio/tree/gh-pages/static/css/main.b0451ef3.css.map",
+    "main.32ae9e32.js.map": "/KishoreMuchintala/Portfolio/tree/gh-pages/static/js/main.32ae9e32.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b0451ef3.css",
+    "static/js/main.32ae9e32.js"
+  ]
+}

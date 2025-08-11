@@ -1,5 +1,5 @@
-export const resumeUrl = "https://drive.google.com/file/d/1D_Hoy2IpIhlWYITmm3VjRiGZPwg0P7Rz/view?usp=sharing";
-export const profilePicture = "%PUBLIC_URL%/Profile_picture.jpeg"; // Place your profile image in public/profile.jpg
+export const resumeUrl = `${process.env.PUBLIC_URL}/resume.pdf`;
+export const profilePicture = `${process.env.PUBLIC_URL}/Profile_picture.jpeg`; // Place your profile image in public/profile.jpg
 export function ProfilePicture({ size = 80 }) {
   return (
     <img

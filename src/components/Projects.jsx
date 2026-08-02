@@ -6,7 +6,12 @@ export default function Projects() {
   return (
     <section id="projects" className="section section-light">
       <Container>
-        <h2 className="h1 mb-4">Selected Work</h2>
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-2 mb-4">
+          <div>
+            <h2 className="h1 mb-2">Selected Work</h2>
+            <p className="lead-muted mb-0">A mix of product engineering, enterprise platforms, and modern web architecture.</p>
+          </div>
+        </div>
         <Row className="g-4">
           {projects.map((p) => (
             <Col md={6} key={p.title}>
@@ -19,12 +24,10 @@ export default function Projects() {
                 </Card.Header>
                 <Card.Body>
                   <p className="text-muted">{p.description}</p>
-                  <ul>
+                  <div className="fw-semibold mb-2">Key outcomes</div>
+                  <ul className="text-muted mb-0">
                     {p.impact.map((i) => (<li key={i}>{i}</li>))}
                   </ul>
-                  <div className="pt-2">
-                    <Button variant="link" onClick={(e)=> e.preventDefault()}>View details</Button>
-                  </div>
                 </Card.Body>
               </Card>
             </Col>

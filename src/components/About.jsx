@@ -13,9 +13,12 @@ export default function About() {
           <Col lg={8}>
             <h2 className="h1">Engineer, builder, and systems thinker</h2>
             <p className="lead-muted mt-2">
-              I design, implement, and scale full‑stack systems with a focus on developer experience, accessibility, and measurable performance. I specialize in <strong>cloud‑native microservices</strong>, <strong>React/Next.js</strong> frontends, and <strong>AWS‑backed pipelines</strong>.
+              I build reliable digital products that balance strong engineering fundamentals with excellent user experience. My work spans modern frontend architecture, enterprise CMS platforms, cloud-native services, and performance-focused delivery for fast-moving teams.
             </p>
-            <ul className="text-muted">
+            <p className="lead-muted mt-3">
+              I’m especially interested in solving complex product problems with pragmatic engineering — improving scalability, reducing friction, and creating experiences that feel effortless for both users and developers.
+            </p>
+            <ul className="text-muted mt-3">
               {highlights.map((h) => (<li key={h}>{h}</li>))}
             </ul>
           </Col>

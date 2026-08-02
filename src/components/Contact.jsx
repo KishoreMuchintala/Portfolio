@@ -30,6 +30,32 @@ async function getGeo() {
   }
 }
 
+function getVisitorDetails() {
+  const ua = typeof navigator !== 'undefined' ? navigator.userAgent || '' : '';
+
+  let browser = 'Unknown';
+  if (/Edg\//.test(ua)) browser = 'Edge';
+  else if (/Chrome|CriOS/.test(ua)) browser = 'Chrome';
+  else if (/Firefox/.test(ua)) browser = 'Firefox';
+  else if (/Safari/.test(ua) && !/Chrome|CriOS|Edg/.test(ua)) browser = 'Safari';
+  else if (/OPR|Opera/.test(ua)) browser = 'Opera';
+  else if (/SamsungBrowser/.test(ua)) browser = 'Samsung Internet';
+
+  let deviceType = 'Unknown';
+  if (/iPad|Tablet/i.test(ua)) deviceType = 'Tablet';
+  else if (/iPhone|iPod|Android.*Mobile|Mobile/i.test(ua)) deviceType = 'Mobile';
+  else if (/Mac|Windows|Linux/i.test(ua)) deviceType = 'Desktop';
+
+  let os = 'Unknown';
+  if (/Windows/i.test(ua)) os = 'Windows';
+  else if (/Mac OS X/i.test(ua)) os = 'macOS';
+  else if (/Android/i.test(ua)) os = 'Android';
+  else if (/iPhone|iPad|iPod/i.test(ua)) os = 'iOS';
+  else if (/Linux/i.test(ua)) os = 'Linux';
+
+  return { browser, deviceType, os, ua };
+}
+
 // Throttle using localStorage (1 email per minute)
 function canSend(key) {
   const last = parseInt(localStorage.getItem(key) || '0', 10);
@@ -37,6 +63,18 @@ function canSend(key) {
   if (now - last < 60 * 1000) return false;
   localStorage.setItem(key, String(now));
   return true;
+}
+
+const VISIT_EMAIL_SESSION_KEY = 'portfolio_visit_email_sent';
+
+function getVisitEmailSessionFlag() {
+  if (typeof window === 'undefined') return true;
+  return window.sessionStorage.getItem(VISIT_EMAIL_SESSION_KEY) === '1';
+}
+
+function setVisitEmailSessionFlag(value) {
+  if (typeof window === 'undefined') return;
+  window.sessionStorage.setItem(VISIT_EMAIL_SESSION_KEY, value ? '1' : '0');
 }
 
 export default function Contact() {
@@ -48,32 +86,56 @@ export default function Contact() {
   // VISIT EMAIL — on mount, 1/min
   useEffect(() => {
     const throttleKey = 'visit_last_email_at';
+    if (getVisitEmailSessionFlag()) return;
     if (!canSend(throttleKey)) return;
+
+    setVisitEmailSessionFlag(true);
 
     (async () => {
       const geo = await getGeo();
+      const visitor = getVisitorDetails();
+      const sentAt = new Date().toISOString();
+      const detailsText =
+        `A visitor opened your portfolio.\n\n` +
+        `Location: ${geo.city || 'Unknown'}, ${geo.region || ''} ${geo.country_name || ''}\n` +
+        `Coordinates: ${geo.latitude || 'Unknown'}, ${geo.longitude || 'Unknown'}\n` +
+        `Device Type: ${visitor.deviceType}\n` +
+        `Browser: ${visitor.browser}\n` +
+        `OS: ${visitor.os}\n` +
+        `Time: ${sentAt}\n` +
+        `Page: ${window.location.href}\n` +
+        `Time Zone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}\n` +
+        `IP: ${geo.ip || 'Unknown'}\n` +
+        `User-Agent: ${visitor.ua}`;
       const vars = {
         subject: 'Someone has visited your portfolio',
-        body:
-          `A visitor opened your portfolio.\n\n` +
-          `Location: ${geo.city || 'Unknown'}, ${geo.region || ''} ${geo.country_name || ''}\n` +
-          `Time: ${new Date().toISOString()}\n` +
-          `Page: ${window.location.href}\n` +
-          `Time Zone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}\n` +
-          `IP: ${geo.ip || 'Unknown'}\n` +
-          `User-Agent: ${navigator.userAgent}`,
+        body: detailsText,
+        name: 'Portfolio Visitor',
+        email: '',
+        message: detailsText,
+        time: sentAt,
+        location: `${geo.city || 'Unknown'}, ${geo.region || ''} ${geo.country_name || ''}`.trim(),
+        coordinates: `${geo.latitude || 'Unknown'}, ${geo.longitude || 'Unknown'}`,
+        deviceType: visitor.deviceType,
+        browser: visitor.browser,
+        os: visitor.os,
+        ip: geo.ip || 'Unknown',
+        userAgent: visitor.ua,
         page: window.location.href,
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        ua: navigator.userAgent,
+        ua: visitor.ua,
         city: geo.city || '',
         region: geo.region || '',
         country: geo.country_name || '',
-        ip: geo.ip || '',
+        latitude: geo.latitude || '',
+        longitude: geo.longitude || '',
       };
 
       try {
         await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, vars);
       } catch {
+        setVisitEmailSessionFlag(false);
         // ignore failures (e.g., offline)
       }
     })();
@@ -97,29 +159,47 @@ export default function Contact() {
 
     try {
       const geo = await getGeo();
+      const visitor = getVisitorDetails();
+      const sentAt = new Date().toISOString();
+      const detailsText =
+        `A visitor submitted your contact form.\n\n` +
+        `Name: ${payload.name || 'N/A'}\n` +
+        `Email: ${payload.email || 'N/A'}\n` +
+        `Message: ${payload.message || 'N/A'}\n\n` +
+        `Location: ${geo.city || 'Unknown'}, ${geo.region || ''} ${geo.country_name || ''}\n` +
+        `Coordinates: ${geo.latitude || 'Unknown'}, ${geo.longitude || 'Unknown'}\n` +
+        `Device Type: ${visitor.deviceType}\n` +
+        `Browser: ${visitor.browser}\n` +
+        `OS: ${visitor.os}\n` +
+        `Time: ${sentAt}\n` +
+        `IP: ${geo.ip || 'Unknown'}\n` +
+        `User-Agent: ${visitor.ua}`;
       const vars = {
         subject: 'Someone requested to contact you through your profile',
-        body:
-          `A visitor submitted your contact form.\n\n` +
-          `Name: ${payload.name || 'N/A'}\n` +
-          `Email: ${payload.email || 'N/A'}\n` +
-          `Message: ${payload.message || 'N/A'}\n\n` +
-          `Location: ${geo.city || 'Unknown'}, ${geo.region || ''} ${geo.country_name || ''}\n` +
-          `Time: ${new Date().toISOString()}\n` +
-          `IP: ${geo.ip || 'Unknown'}\n` +
-          `User-Agent: ${navigator.userAgent}`,
-        name: payload.name || '',
+        body: detailsText,
+        name: payload.name || 'Anonymous Visitor',
         email: payload.email || '',
-        message: payload.message || '',
+        message: detailsText,
+        time: sentAt,
+        location: `${geo.city || 'Unknown'}, ${geo.region || ''} ${geo.country_name || ''}`.trim(),
+        coordinates: `${geo.latitude || 'Unknown'}, ${geo.longitude || 'Unknown'}`,
         city: geo.city || '',
         region: geo.region || '',
         country: geo.country_name || '',
         ip: geo.ip || '',
+        latitude: geo.latitude || '',
+        longitude: geo.longitude || '',
+        deviceType: visitor.deviceType,
+        browser: visitor.browser,
+        os: visitor.os,
+        userAgent: visitor.ua,
+        page: window.location.href,
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        ua: navigator.userAgent,
+        ua: visitor.ua,
       };
 
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, vars);
+     // await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, vars);
       setStatus({ state: 'success', message: 'Thanks! Your message has been sent.' });
       //e.currentTarget.reset();
     } catch {
@@ -137,7 +217,10 @@ export default function Contact() {
   return (
     <section id="contact" className="section section-light">
       <Container>
-        <h2 className="h1 mb-4">Let’s build something great</h2>
+        <div className="mb-4">
+          <h2 className="h1 mb-2">Let’s build something great</h2>
+          <p className="lead-muted mb-0">Open to impactful product work, engineering leadership opportunities, and collaborations that solve meaningful problems.</p>
+        </div>
         <Row className="g-4">
           <Col md={6}>
             <Card className="shadow-soft">

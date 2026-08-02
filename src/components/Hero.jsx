@@ -92,15 +92,15 @@ export default function Hero() {
             
             {/* Title + Profile Picture */}
             <h1 className="display-5 fw-bold d-flex align-items-center">
-              Software Development Engineer
+              Full-Stack Engineer Building Scalable, Product-Ready Digital Experiences
             </h1>
             <p className="lead lead-muted mt-3">
-              Results‑driven engineer crafting scalable web applications, cloud‑native microservices, and accessible UI systems. Passionate about performance, developer experience, and measurable impact.
+              I design and ship high-impact web platforms across frontend, backend, and cloud systems — with a strong focus on performance, accessibility, and measurable business outcomes.
             </p>
 
             <div className="d-flex flex-wrap gap-2 mt-3">
-              <Button href="#projects" variant="primary">View Projects</Button>
-              <Button href="#contact" variant="outline-secondary">Contact Me</Button>
+              <Button href="#projects" variant="primary">Explore My Work</Button>
+              <Button href="#contact" variant="outline-secondary">Let’s Connect</Button>
               <Button href={contact.github} target="_blank" rel="noreferrer" variant="link">GitHub</Button>
               <Button href={contact.linkedin} target="_blank" rel="noreferrer" variant="link">LinkedIn</Button>
             </div>

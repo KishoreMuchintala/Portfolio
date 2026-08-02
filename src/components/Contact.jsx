@@ -199,7 +199,7 @@ export default function Contact() {
         ua: visitor.ua,
       };
 
-     // await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, vars);
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, vars);
       setStatus({ state: 'success', message: 'Thanks! Your message has been sent.' });
       //e.currentTarget.reset();
     } catch {

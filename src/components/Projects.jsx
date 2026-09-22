@@ -18,6 +18,11 @@ export default function Projects() {
               <Card className="h-100 shadow-soft">
                 <Card.Header>
                   <div className="fw-semibold">{p.title}</div>
+                  {p.link && (
+                    <a className="small" href={p.link} target="_blank" rel="noreferrer">
+                      {p.linkLabel || p.link}
+                    </a>
+                  )}
                   <div className="d-flex flex-wrap gap-2 mt-2">
                     {p.stack.map((s) => (<span key={s} className="chip">{s}</span>))}
                   </div>

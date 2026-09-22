@@ -9,6 +9,7 @@ import Experience from './components/Experience';
 import EducationCerts from './components/EducationCerts';
 import Contact from './components/Contact';
 import SiteFooter from './components/SiteFooter';
+import FlowFinBanner from './components/FlowFinBanner';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
       <EducationCerts />
       <Contact />
       <SiteFooter />
+      <FlowFinBanner />
     </div>
   );
 }

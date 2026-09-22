@@ -166,3 +166,48 @@ a {
   color: #fff;
   box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
 }
+
+/* FlowFin intro popup */
+.ff-popup .modal-content {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.ff-popup .modal-header {
+  align-items: flex-start;
+  padding: 1.25rem 1.35rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.ff-popup .modal-body { padding: 1.1rem 1.35rem; font-size: 0.95rem; line-height: 1.6; }
+
+.ff-popup .modal-footer {
+  padding: 0.9rem 1.35rem 1.15rem;
+  border-top: 1px solid var(--border);
+  gap: 0.5rem;
+}
+
+.ff-popup-eyebrow {
+  margin-bottom: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ff-popup-secondary { color: var(--muted); font-size: 0.875rem; text-decoration: none; }
+.ff-popup-secondary:hover { color: var(--brand); }
+
+@media (max-width: 575.98px) {
+  .ff-popup .modal-footer { flex-direction: column-reverse; align-items: stretch; }
+  .ff-popup .modal-footer .d-flex { justify-content: stretch; }
+  .ff-popup .modal-footer .btn { flex: 1 1 auto; justify-content: center; }
+  .ff-popup-secondary { text-align: center; }
+}

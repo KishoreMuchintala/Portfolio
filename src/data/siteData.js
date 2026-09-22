@@ -285,6 +285,21 @@ export const skills = {
 
 export const projects = [
   {
+    title: "FlowFin \u2014 Double-Entry Personal Finance & Expense Splitting",
+    link: "https://flowfin.us",
+    linkLabel: "flowfin.us",
+    stack: ["Next.js 15", "React 19", "TypeScript", "Java 21", "PostgreSQL", "Plaid", "Sass Modules", "Docker", "AWS EC2"],
+    description:
+      "A personal, non-commercial finance platform built on a true double-entry ledger \u2014 bank-linked transactions, group expense splitting, and settle-up, with every balance derived from immutable ledger entries. Bank connectivity runs on Plaid Sandbox data only; no real bank credentials are ever handled.",
+    impact: [
+      "Designed an append-only double-entry ledger in integer minor units \u2014 no floats in the money path, edits are reverse-and-repost, and balances are always derived rather than stored",
+      "Built largest-remainder split allocation that is deterministic and provably never loses a cent across any number of participants",
+      "Shipped a pnpm/Turborepo monorepo sharing all money logic in a core package between a Next.js 15 web app and a Java 21 + PostgreSQL API, contract-first from an OpenAPI spec",
+      "Hardened auth with in-memory access tokens, rotating httpOnly refresh cookies with reuse detection, and TOTP two-factor gating on bank linking",
+      "Deployed to production on AWS EC2 via Docker Compose behind Caddy, with nightly S3 backups, verified restore tests, CloudWatch alarms, and uptime checks",
+    ],
+  },
+  {
     title: "Project Mandara — IQEA (Freelance)",
     stack: ["React.js", "TypeScript", "Tailwind CSS", "REST APIs", "State Management"],
     description:
